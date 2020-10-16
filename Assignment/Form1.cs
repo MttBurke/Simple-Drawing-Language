@@ -31,14 +31,18 @@ namespace Assignment
         public Form1()
         {
             InitializeComponent();
-            MyBitmap = new Bitmap(GraphicsPanel.Width, GraphicsPanel.Height);
-            dp = new DrawingPanel(GraphicsPanel, MyBitmap);
+            MyBitmap = new Bitmap(GraphicsPanel.Width, GraphicsPanel.Height); //Initialising new bitmap to be drawn on
+            dp = new DrawingPanel(GraphicsPanel, MyBitmap); //drawing panel for drawing onto bitmap
         }
         
         private void TxtBox_Input_KeyDown(object sender, KeyEventArgs e)
         {
             if(e.KeyCode == Keys.Enter)
             {
+                /*
+                 * TextInput to be split into command and parameter
+                 * Tempstring stores parameters which is split again if more than 1 parameter
+                 */
                 TextInput = TxtBox_Input.Text;
                 TempString = TextInput.Substring(TextInput.IndexOf(' ') + 1);
                 SplitParameters = TempString.Split(',');
@@ -155,17 +159,28 @@ namespace Assignment
                         dp.PenColour(Color.Yellow);
                     }
                 }
+                else if(TextInput.Trim() == "run")
+                {
+                    CommandCase = 0;
+                    Language l = new Language(TxtBox_Code, GraphicsPanel, MyBitmap);
+                }
       
             }
         } 
         
         private int SetX()
         {
+            /*
+             * First part of parameter to be parsed into an int
+             */
             return int.Parse(SplitParameters[0]);
         }
 
         private int SetY()
         {
+            /*
+             * SEcond part of parametere parsed into an int
+             */
             return int.Parse(SplitParameters[1]);
         }
 

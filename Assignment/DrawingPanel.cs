@@ -12,22 +12,20 @@ namespace Assignment
     {
 
         Pen p = new Pen(Color.Black);
-        //Panel Panel_1 = null;
         Graphics g = null;
-        bool Fill = false;
+        bool Fill = false; //shapes drawn with fill = true will be filled in
         int PenX = 0;
         int PenY = 0;
 
         public DrawingPanel(Panel InputPanel, Bitmap InputBitmap)
         {
             g = Graphics.FromImage(InputBitmap);
-            //Panel_1 = InputPanel;
         }
 
         public void DrawLine(int InX, int InY)
         {
             g.DrawLine(p, PenX, PenY, InX, InY);
-            PenX = InX;
+            PenX = InX; //Setting pen position to end position of line
             PenY = InY;
         }
 

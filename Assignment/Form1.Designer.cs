@@ -35,6 +35,7 @@
             this.Menu_Load = new System.Windows.Forms.ToolStripMenuItem();
             this.TxtBox_Output = new System.Windows.Forms.TextBox();
             this.GraphicsPanel = new System.Windows.Forms.Panel();
+            this.TxtBox_Code = new System.Windows.Forms.TextBox();
             this.MenuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -52,7 +53,7 @@
             this.MenuBar});
             this.MenuStrip1.Location = new System.Drawing.Point(0, 0);
             this.MenuStrip1.Name = "MenuStrip1";
-            this.MenuStrip1.Size = new System.Drawing.Size(788, 24);
+            this.MenuStrip1.Size = new System.Drawing.Size(976, 24);
             this.MenuStrip1.TabIndex = 1;
             this.MenuStrip1.Text = "menuStrip1";
             // 
@@ -94,11 +95,20 @@
             this.GraphicsPanel.TabIndex = 3;
             this.GraphicsPanel.Paint += new System.Windows.Forms.PaintEventHandler(this.GraphicsPanel_Paint);
             // 
+            // TxtBox_Code
+            // 
+            this.TxtBox_Code.Location = new System.Drawing.Point(791, 26);
+            this.TxtBox_Code.Multiline = true;
+            this.TxtBox_Code.Name = "TxtBox_Code";
+            this.TxtBox_Code.Size = new System.Drawing.Size(185, 535);
+            this.TxtBox_Code.TabIndex = 4;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(788, 561);
+            this.ClientSize = new System.Drawing.Size(976, 561);
+            this.Controls.Add(this.TxtBox_Code);
             this.Controls.Add(this.GraphicsPanel);
             this.Controls.Add(this.TxtBox_Output);
             this.Controls.Add(this.TxtBox_Input);
@@ -122,6 +132,7 @@
         private System.Windows.Forms.ToolStripMenuItem Menu_Load;
         private System.Windows.Forms.TextBox TxtBox_Output;
         private System.Windows.Forms.Panel GraphicsPanel;
+        private System.Windows.Forms.TextBox TxtBox_Code;
     }
 }
 
