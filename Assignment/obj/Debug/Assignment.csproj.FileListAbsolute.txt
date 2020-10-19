@@ -1,0 +1,10 @@
+D:\Year 3\repos\Assignment\Assignment\bin\Debug\Assignment.exe.config
+D:\Year 3\repos\Assignment\Assignment\bin\Debug\Assignment.exe
+D:\Year 3\repos\Assignment\Assignment\bin\Debug\Assignment.pdb
+D:\Year 3\repos\Assignment\Assignment\obj\Debug\Assignment.csprojAssemblyReference.cache
+D:\Year 3\repos\Assignment\Assignment\obj\Debug\Assignment.Form1.resources
+D:\Year 3\repos\Assignment\Assignment\obj\Debug\Assignment.Properties.Resources.resources
+D:\Year 3\repos\Assignment\Assignment\obj\Debug\Assignment.csproj.GenerateResource.cache
+D:\Year 3\repos\Assignment\Assignment\obj\Debug\Assignment.csproj.CoreCompileInputs.cache
+D:\Year 3\repos\Assignment\Assignment\obj\Debug\Assignment.exe
+D:\Year 3\repos\Assignment\Assignment\obj\Debug\Assignment.pdb

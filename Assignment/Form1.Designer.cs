@@ -33,9 +33,8 @@
             this.MenuBar = new System.Windows.Forms.ToolStripMenuItem();
             this.Menu_Save = new System.Windows.Forms.ToolStripMenuItem();
             this.Menu_Load = new System.Windows.Forms.ToolStripMenuItem();
-            this.TxtBox_Output = new System.Windows.Forms.TextBox();
+            this.TxtBox_Command = new System.Windows.Forms.TextBox();
             this.GraphicsPanel = new System.Windows.Forms.Panel();
-            this.TxtBox_Code = new System.Windows.Forms.TextBox();
             this.MenuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -53,7 +52,7 @@
             this.MenuBar});
             this.MenuStrip1.Location = new System.Drawing.Point(0, 0);
             this.MenuStrip1.Name = "MenuStrip1";
-            this.MenuStrip1.Size = new System.Drawing.Size(976, 24);
+            this.MenuStrip1.Size = new System.Drawing.Size(788, 24);
             this.MenuStrip1.TabIndex = 1;
             this.MenuStrip1.Text = "menuStrip1";
             // 
@@ -78,13 +77,13 @@
             this.Menu_Load.Size = new System.Drawing.Size(100, 22);
             this.Menu_Load.Text = "Load";
             // 
-            // TxtBox_Output
+            // TxtBox_Command
             // 
-            this.TxtBox_Output.Location = new System.Drawing.Point(594, 54);
-            this.TxtBox_Output.Multiline = true;
-            this.TxtBox_Output.Name = "TxtBox_Output";
-            this.TxtBox_Output.Size = new System.Drawing.Size(190, 507);
-            this.TxtBox_Output.TabIndex = 2;
+            this.TxtBox_Command.Location = new System.Drawing.Point(594, 54);
+            this.TxtBox_Command.Multiline = true;
+            this.TxtBox_Command.Name = "TxtBox_Command";
+            this.TxtBox_Command.Size = new System.Drawing.Size(190, 507);
+            this.TxtBox_Command.TabIndex = 2;
             // 
             // GraphicsPanel
             // 
@@ -95,22 +94,13 @@
             this.GraphicsPanel.TabIndex = 3;
             this.GraphicsPanel.Paint += new System.Windows.Forms.PaintEventHandler(this.GraphicsPanel_Paint);
             // 
-            // TxtBox_Code
-            // 
-            this.TxtBox_Code.Location = new System.Drawing.Point(791, 26);
-            this.TxtBox_Code.Multiline = true;
-            this.TxtBox_Code.Name = "TxtBox_Code";
-            this.TxtBox_Code.Size = new System.Drawing.Size(185, 535);
-            this.TxtBox_Code.TabIndex = 4;
-            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(976, 561);
-            this.Controls.Add(this.TxtBox_Code);
+            this.ClientSize = new System.Drawing.Size(788, 561);
             this.Controls.Add(this.GraphicsPanel);
-            this.Controls.Add(this.TxtBox_Output);
+            this.Controls.Add(this.TxtBox_Command);
             this.Controls.Add(this.TxtBox_Input);
             this.Controls.Add(this.MenuStrip1);
             this.MainMenuStrip = this.MenuStrip1;
@@ -130,9 +120,8 @@
         private System.Windows.Forms.ToolStripMenuItem MenuBar;
         private System.Windows.Forms.ToolStripMenuItem Menu_Save;
         private System.Windows.Forms.ToolStripMenuItem Menu_Load;
-        private System.Windows.Forms.TextBox TxtBox_Output;
+        private System.Windows.Forms.TextBox TxtBox_Command;
         private System.Windows.Forms.Panel GraphicsPanel;
-        private System.Windows.Forms.TextBox TxtBox_Code;
     }
 }
 
