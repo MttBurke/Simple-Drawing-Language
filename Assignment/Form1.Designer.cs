@@ -33,7 +33,7 @@
             this.MenuBar = new System.Windows.Forms.ToolStripMenuItem();
             this.Menu_Save = new System.Windows.Forms.ToolStripMenuItem();
             this.Menu_Load = new System.Windows.Forms.ToolStripMenuItem();
-            this.TxtBox_Command = new System.Windows.Forms.TextBox();
+            this.TxtBox_Commands = new System.Windows.Forms.TextBox();
             this.GraphicsPanel = new System.Windows.Forms.Panel();
             this.MenuStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -77,13 +77,13 @@
             this.Menu_Load.Size = new System.Drawing.Size(100, 22);
             this.Menu_Load.Text = "Load";
             // 
-            // TxtBox_Command
+            // TxtBox_Commands
             // 
-            this.TxtBox_Command.Location = new System.Drawing.Point(594, 54);
-            this.TxtBox_Command.Multiline = true;
-            this.TxtBox_Command.Name = "TxtBox_Command";
-            this.TxtBox_Command.Size = new System.Drawing.Size(190, 507);
-            this.TxtBox_Command.TabIndex = 2;
+            this.TxtBox_Commands.Location = new System.Drawing.Point(594, 54);
+            this.TxtBox_Commands.Multiline = true;
+            this.TxtBox_Commands.Name = "TxtBox_Commands";
+            this.TxtBox_Commands.Size = new System.Drawing.Size(190, 507);
+            this.TxtBox_Commands.TabIndex = 2;
             // 
             // GraphicsPanel
             // 
@@ -100,7 +100,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(788, 561);
             this.Controls.Add(this.GraphicsPanel);
-            this.Controls.Add(this.TxtBox_Command);
+            this.Controls.Add(this.TxtBox_Commands);
             this.Controls.Add(this.TxtBox_Input);
             this.Controls.Add(this.MenuStrip1);
             this.MainMenuStrip = this.MenuStrip1;
@@ -120,7 +120,7 @@
         private System.Windows.Forms.ToolStripMenuItem MenuBar;
         private System.Windows.Forms.ToolStripMenuItem Menu_Save;
         private System.Windows.Forms.ToolStripMenuItem Menu_Load;
-        private System.Windows.Forms.TextBox TxtBox_Command;
+        private System.Windows.Forms.TextBox TxtBox_Commands;
         private System.Windows.Forms.Panel GraphicsPanel;
     }
 }
