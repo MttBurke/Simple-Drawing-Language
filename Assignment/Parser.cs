@@ -25,7 +25,7 @@ namespace Assignment
             dp = new DrawingPanel(GraphicsPanel, InputBitmap);
         }
 
-        public void ParseCommand(string InputCommand)
+        public virtual void ParseCommand(string InputCommand)
         {
             /*
              * Splitting input text into command and parameters
