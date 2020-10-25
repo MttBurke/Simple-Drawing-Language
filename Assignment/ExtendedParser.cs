@@ -17,7 +17,9 @@ namespace Assignment
         Dictionary<string, int> vars = new Dictionary<string, int>();
         Regex VariableName = new Regex("\\w*\\d*");
         bool IfStatementValid = false;
-        bool EndifFound = false;
+        bool EndifFound = true;
+        bool LoopStatement = false;
+        string[] LineArray;
 
         public ExtendedParser(Panel InputPanel, Bitmap InputBitmap) : base(InputPanel, InputBitmap)
         {
@@ -27,72 +29,29 @@ namespace Assignment
 
         public void ParseTextBox(TextBox Inputbox)
         {
-            foreach (string l in Inputbox.Lines)
+            LineArray = Inputbox.Lines;
+            int LoopLineNum = 0;
+            int EndLoopLine = Array.IndexOf(LineArray, "Endloop");
+
+            for (int i = 0; i < LineArray.Length; i++)
             {
                 string[] split = { " " };
-                if (l.Trim() != "Endif")
+                if (LineArray[i].Trim() != "Endif" || LineArray[i].Trim() != "Endloop")
                 {
-                    split = l.Split(' ');
+                    split = LineArray[i].Split(' ');
                 }
-                else if(l.Trim() == "Endif")
+                else if (LineArray[i].Trim() == "Endif")
                 {
                     split[0] = "Endif";
                 }
-       
+                else if (LineArray[i].Trim() == "Endloop")
+                {
+                    split[0] = "Endloop";
+                }
+
                 if (split[0] == "If")
                 {
-                    int ValueToCompare = int.Parse(split[3]);
-                    if (vars.ContainsKey(split[1]))
-                    {
-                        if (split[2] == "=")
-                        {
-                            if (vars[split[1]] == ValueToCompare)
-                            {
-                                EndifFound = false;
-                                IfStatementValid = true;
-                            }
-                        }
-                        else if (split[2] == ">")
-                        {
-                            if (vars[split[1]] > ValueToCompare)
-                            {
-                                EndifFound = false;
-                                IfStatementValid = true;
-                            }
-                        }
-                        else if (split[2] == ">=")
-                        {
-                            if (vars[split[1]] >= ValueToCompare)
-                            {
-                                EndifFound = false;
-                                IfStatementValid = true;
-                            }
-                        }
-                        else if (split[2] == "<")
-                        {
-                            if (vars[split[1]] < ValueToCompare)
-                            {
-                                EndifFound = false;
-                                IfStatementValid = true;
-                            }
-                        }
-                        else if (split[2] == "<=")
-                        {
-                            if (vars[split[1]] <= ValueToCompare)
-                            {
-                                EndifFound = false;
-                                IfStatementValid = true;
-                            }
-                        }
-                        else if (split[2] == "!=")
-                        {
-                            if (vars[split[1]] != ValueToCompare)
-                            {
-                                EndifFound = false;
-                                IfStatementValid = true;
-                            }
-                        }
-                    }
+                    ParseIf(split);
                 }
                 else if (split[0] == "Endif")
                 {
@@ -101,69 +60,98 @@ namespace Assignment
                 }
                 else if (split[0] == "Loop")
                 {
+                    LoopLineNum = i;
+                    int ValueToCompare = int.Parse(split[3]);
 
+                    if (vars.ContainsKey(split[1]))
+                    {
+                        if (split[2] == ">")
+                        {
+                            if (vars[split[1]] > ValueToCompare)
+                            {
+                                LoopStatement = true;
+                            }
+                            else
+                            {
+                                LoopStatement = false;
+                                i = EndLoopLine;
+                            }
+                        }
+                        else if (split[2] == ">=")
+                        {
+                            if (vars[split[1]] >= ValueToCompare)
+                            {
+                                LoopStatement = true;
+                            }
+                            else
+                            {
+                                LoopStatement = false;
+                                i = EndLoopLine;
+                            }
+                        }
+                        else if (split[2] == "<")
+                        {
+                            if (vars[split[1]] < ValueToCompare)
+                            {
+                                LoopStatement = true;
+                            }
+                            else
+                            {
+                                LoopStatement = false;
+                                i = EndLoopLine;
+                            }
+                        }
+                        else if (split[2] == "<=")
+                        {
+                            if (vars[split[1]] <= ValueToCompare)
+                            {
+                                LoopStatement = true;
+                            }
+                            else
+                            {
+                                LoopStatement = false;
+                                i = EndLoopLine;
+                            }
+                        }
+                        else if (split[2] == "!=")
+                        {
+                            if (vars[split[1]] != ValueToCompare)
+                            {
+                                LoopStatement = true;
+                            }
+                            else
+                            {
+                                LoopStatement = false;
+                                i = EndLoopLine;
+                            }
+                        }
+                    }
+                }
+                else if (split[0] == "Endloop")
+                {
+                    if (LoopStatement == true)
+                    {
+                        i = LoopLineNum - 1;
+                        LoopStatement = false;
+                    }
                 }
                 else if (split[0] == "Method")
                 {
 
                 }
-                else if (split[0] == "drawTo" || split[0] == "moveTo" || split[0] == "Rectangle" || split[0] == "Triangle"|| split[0] == "Circle" || split[0] == "Fill" || split[0] == "Colour")
+                else if (split[0] == "drawTo" || split[0] == "moveTo" || split[0] == "Rectangle" || split[0] == "Triangle" || split[0] == "Circle" || split[0] == "Fill" || split[0] == "Colour")
                 {
                     if ((IfStatementValid == true && EndifFound == false) || (EndifFound == true && IfStatementValid == false))
                     {
-                        ParseCommand(l.Trim());
+                        ParseCommand(LineArray[i].Trim());
                     }
                 }
                 else if (VariableName.IsMatch(split[0])) //If input is any type of text and it has some type of operator a variable will be added or changed
                 {
-                    string Name;
-                    int Value = 0;
-                    if (split[1] == "=")
-                    {
-                        Name = split[0];
-                        try
-                        {
-                            Value = int.Parse(split[2]);
-                            vars.Add(Name, Value);
-                        }
-                        catch
-                        {
-                            MessageBox.Show("Invalid variable value", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                        }
-                    }
-                    else if (split[1] == "+")
-                    {
-                        if (vars.ContainsKey(split[0]))
-                        {
-                            vars[split[0]] += int.Parse(split[2]);
-                        }
-                    }
-                    else if (split[1] == "-")
-                    {
-                        if (vars.ContainsKey(split[0]))
-                        {
-                            vars[split[0]] -= int.Parse(split[2]);
-                        }
-                    }
-                    else if (split[1] == "*")
-                    {
-                        if (vars.ContainsKey(split[0]))
-                        {
-                            vars[split[0]] *= int.Parse(split[2]);
-                        }
-                    }
-                    else if (split[1] == "/")
-                    {
-                        if (vars.ContainsKey(split[0]))
-                        {
-                            vars[split[0]] /= int.Parse(split[2]);
-                        }
-                    }
+                    ParseVariable(split);
                 }
             }
         }
-
-
 
         public override void ParseCommand(string InputCommand)
         {
@@ -401,6 +389,109 @@ namespace Assignment
         private int SetY(string Input)
         {
             return int.Parse(Input);
+        }
+
+        private void ParseVariable(string[] split)
+        {
+            string Name;
+            int Value = 0;
+            if (split[1] == "=")
+            {
+                Name = split[0];
+                try
+                {
+                    Value = int.Parse(split[2]);
+                    vars.Add(Name, Value);
+                }
+                catch
+                {
+                    MessageBox.Show("Invalid variable value", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+            else if (split[1] == "+")
+            {
+                if (vars.ContainsKey(split[0]))
+                {
+                    vars[split[0]] += int.Parse(split[2]);
+                }
+            }
+            else if (split[1] == "-")
+            {
+                if (vars.ContainsKey(split[0]))
+                {
+                    vars[split[0]] -= int.Parse(split[2]);
+                }
+            }
+            else if (split[1] == "*")
+            {
+                if (vars.ContainsKey(split[0]))
+                {
+                    vars[split[0]] *= int.Parse(split[2]);
+                }
+            }
+            else if (split[1] == "/")
+            {
+                if (vars.ContainsKey(split[0]))
+                {
+                    vars[split[0]] /= int.Parse(split[2]);
+                }
+            }
+        }
+
+        private void ParseIf(string[] split)
+        {
+            int ValueToCompare = int.Parse(split[3]);
+            if (vars.ContainsKey(split[1]))
+            {
+                if (split[2] == "=")
+                {
+                    if (vars[split[1]] == ValueToCompare)
+                    {
+                        EndifFound = false;
+                        IfStatementValid = true;
+                    }
+                }
+                else if (split[2] == ">")
+                {
+                    if (vars[split[1]] > ValueToCompare)
+                    {
+                        EndifFound = false;
+                        IfStatementValid = true;
+                    }
+                }
+                else if (split[2] == ">=")
+                {
+                    if (vars[split[1]] >= ValueToCompare)
+                    {
+                        EndifFound = false;
+                        IfStatementValid = true;
+                    }
+                }
+                else if (split[2] == "<")
+                {
+                    if (vars[split[1]] < ValueToCompare)
+                    {
+                        EndifFound = false;
+                        IfStatementValid = true;
+                    }
+                }
+                else if (split[2] == "<=")
+                {
+                    if (vars[split[1]] <= ValueToCompare)
+                    {
+                        EndifFound = false;
+                        IfStatementValid = true;
+                    }
+                }
+                else if (split[2] == "!=")
+                {
+                    if (vars[split[1]] != ValueToCompare)
+                    {
+                        EndifFound = false;
+                        IfStatementValid = true;
+                    }
+                }
+            }
         }
     }
 }
