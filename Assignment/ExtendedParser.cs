@@ -20,6 +20,8 @@ namespace Assignment
         bool EndifFound = true;
         bool LoopStatement = false;
         string[] LineArray;
+        int LineNum = 0;
+        public List<string> Errors = new List<string>();
 
         public ExtendedParser(Panel InputPanel, Bitmap InputBitmap) : base(InputPanel, InputBitmap)
         {
@@ -35,18 +37,18 @@ namespace Assignment
             /*
              * Looping through each line that was written in command area
              */
-            for (int i = 0; i < LineArray.Length; i++)
+            for (LineNum = 0; LineNum < LineArray.Length; LineNum++)
             {
                 string[] split = { " " };
-                if (LineArray[i].Trim() != "Endif" || LineArray[i].Trim() != "Endloop")
+                if (LineArray[LineNum].Trim() != "Endif" || LineArray[LineNum].Trim() != "Endloop")
                 {
-                    split = LineArray[i].Split(' ');
+                    split = LineArray[LineNum].Split(' ');
                 }
-                else if (LineArray[i].Trim() == "Endif")
+                else if (LineArray[LineNum].Trim() == "Endif")
                 {
                     split[0] = "Endif";
                 }
-                else if (LineArray[i].Trim() == "Endloop")
+                else if (LineArray[LineNum].Trim() == "Endloop")
                 {
                     split[0] = "Endloop";
                 }
@@ -69,7 +71,7 @@ namespace Assignment
                      * If loop statements are still true loop through each line within LOOP and ENDLOOP statement
                      * if not LOOP is completely skipped
                      */
-                    LoopLineNum = i;
+                    LoopLineNum = LineNum;
                     int ValueToCompare = int.Parse(split[3]);
 
                     if (vars.ContainsKey(split[1]))
@@ -83,7 +85,7 @@ namespace Assignment
                             else
                             {
                                 LoopStatement = false;
-                                i = EndLoopLine;
+                                LineNum = EndLoopLine;
                             }
                         }
                         else if (split[2] == ">=")
@@ -95,7 +97,7 @@ namespace Assignment
                             else
                             {
                                 LoopStatement = false;
-                                i = EndLoopLine;
+                                LineNum = EndLoopLine;
                             }
                         }
                         else if (split[2] == "<")
@@ -107,7 +109,7 @@ namespace Assignment
                             else
                             {
                                 LoopStatement = false;
-                                i = EndLoopLine;
+                                LineNum = EndLoopLine;
                             }
                         }
                         else if (split[2] == "<=")
@@ -119,7 +121,7 @@ namespace Assignment
                             else
                             {
                                 LoopStatement = false;
-                                i = EndLoopLine;
+                                LineNum = EndLoopLine;
                             }
                         }
                         else if (split[2] == "!=")
@@ -131,20 +133,20 @@ namespace Assignment
                             else
                             {
                                 LoopStatement = false;
-                                i = EndLoopLine;
+                                LineNum = EndLoopLine;
                             }
                         }
                     }
                     else
                     {
-                        MessageBox.Show("Variable: " + split[0] + " doesn't exist", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        Errors.Add("Variable: " + split[1] + " doesn't exist on line " + LineNum);
                     }
                 }
                 else if (split[0] == "Endloop")
                 {
                     if (LoopStatement == true)
                     {
-                        i = LoopLineNum - 1;
+                        LineNum = LoopLineNum - 1;
                         LoopStatement = false;
                     }
                 }
@@ -156,14 +158,21 @@ namespace Assignment
                 {
                     if ((IfStatementValid == true && EndifFound == false) || (EndifFound == true && IfStatementValid == false))
                     {
-                        ParseCommand(LineArray[i].Trim());
+                        ParseCommand(LineArray[LineNum].Trim());
                     }
                 }
                 else if (VariableName.IsMatch(split[0])) //If input is any type of text and it has some type of operator a variable will be added or changed
                 {
                     if (!string.IsNullOrWhiteSpace(split[0]))
                     {
-                        ParseVariable(split);
+                        try
+                        {
+                            ParseVariable(split);
+                        }
+                        catch
+                        {
+                            Errors.Add("Invalid input line " + LineNum);
+                        }
                     }
                 }
             }
@@ -189,7 +198,7 @@ namespace Assignment
                 }
                 catch
                 {
-                    MessageBox.Show("Invalid input detected", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    Errors.Add("Invalid input detected line " + LineNum);
                 }
             }
 
@@ -202,33 +211,29 @@ namespace Assignment
                         x = SetX(vars[SplitParameters[0]].ToString());
                         y = SetY(vars[SplitParameters[1]].ToString());
                         dp.DrawLine(x, y);
-                        GraphicsPanel.Refresh();
                     }
                     else if (vars.ContainsKey(SplitParameters[0]))
                     {
                         x = SetX(vars[SplitParameters[0]].ToString());
                         y = SetY(SplitParameters[1]);
                         dp.DrawLine(x, y);
-                        GraphicsPanel.Refresh();
                     }
                     else if (vars.ContainsKey(SplitParameters[1]))
                     {
                         x = SetX(SplitParameters[0]);
                         y = SetY(vars[SplitParameters[1]].ToString());
                         dp.DrawLine(x, y);
-                        GraphicsPanel.Refresh();
                     }
                     else
                     {
                         x = SetX(SplitParameters[0]);
                         y = SetY(SplitParameters[1]);
                         dp.DrawLine(x, y);
-                        GraphicsPanel.Refresh();
                     }
                 }
                 catch
                 {
-                    MessageBox.Show("Invalid parameters detected", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    Errors.Add("Invalid parameters deteced line " + LineNum);
                 }
             }
             else if (Command.Trim() == "Rectangle")
@@ -240,33 +245,29 @@ namespace Assignment
                         x = SetX(vars[SplitParameters[0]].ToString());
                         y = SetY(vars[SplitParameters[1]].ToString());
                         dp.DrawRectangle(x, y);
-                        GraphicsPanel.Refresh();
                     }
                     else if (vars.ContainsKey(SplitParameters[0]))
                     {
                         x = SetX(vars[SplitParameters[0]].ToString());
                         y = SetY(SplitParameters[1]);
                         dp.DrawRectangle(x, y);
-                        GraphicsPanel.Refresh();
                     }
                     else if (vars.ContainsKey(SplitParameters[1]))
                     {
                         x = SetX(SplitParameters[0]);
                         y = SetY(vars[SplitParameters[1]].ToString());
                         dp.DrawRectangle(x, y);
-                        GraphicsPanel.Refresh();
                     }
                     else
                     {
                         x = SetX(SplitParameters[0]);
                         y = SetY(SplitParameters[1]);
                         dp.DrawRectangle(x, y);
-                        GraphicsPanel.Refresh();
                     }
                 }
                 catch
                 {
-                    MessageBox.Show("Invalid parameters detected", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    Errors.Add("Invalid parameters deteced line " + LineNum);
                 }
             }
             else if (Command.Trim() == "moveTo")
@@ -278,33 +279,29 @@ namespace Assignment
                         x = SetX(vars[SplitParameters[0]].ToString());
                         y = SetY(vars[SplitParameters[1]].ToString());
                         dp.MoveTo(x, y);
-                        GraphicsPanel.Refresh();
                     }
                     else if (vars.ContainsKey(SplitParameters[0]))
                     {
                         x = SetX(vars[SplitParameters[0]].ToString());
                         y = SetY(SplitParameters[1]);
                         dp.MoveTo(x, y);
-                        GraphicsPanel.Refresh();
                     }
                     else if (vars.ContainsKey(SplitParameters[1]))
                     {
                         x = SetX(SplitParameters[0]);
                         y = SetY(vars[SplitParameters[1]].ToString());
                         dp.MoveTo(x, y);
-                        GraphicsPanel.Refresh();
                     }
                     else
                     {
                         x = SetX(SplitParameters[0]);
                         y = SetY(SplitParameters[1]);
                         dp.MoveTo(x, y);
-                        GraphicsPanel.Refresh();
                     }
                 }
                 catch
                 {
-                    MessageBox.Show("Invalid parameters detected", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    Errors.Add("Invalid parameters deteced line " + LineNum);
                 }
             }
             else if (Command.Trim() == "Circle")
@@ -315,18 +312,16 @@ namespace Assignment
                     {
                         x = SetX(vars[SplitParameters[0]].ToString());
                         dp.DrawCircle(x);
-                        GraphicsPanel.Refresh();
                     }
                     else
                     {
                         x = SetX(SplitParameters[0]);
                         dp.DrawCircle(x);
-                        GraphicsPanel.Refresh();
                     }
                 }
                 catch
                 {
-                    MessageBox.Show("Invalid parameters detected", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    Errors.Add("Invalid parameters deteced line " + LineNum);
                 }
             }
             else if (Command.Trim() == "Fill")
@@ -350,7 +345,6 @@ namespace Assignment
                         y = SetY(vars[SplitParameters[1]].ToString());
                         z = SetY(vars[SplitParameters[2]].ToString());
                         dp.DrawTriangle(x, y, z);
-                        GraphicsPanel.Refresh();
                     }
                     else if (vars.ContainsKey(SplitParameters[0]) && vars.ContainsKey(SplitParameters[1]))
                     {
@@ -358,7 +352,6 @@ namespace Assignment
                         y = SetY(vars[SplitParameters[1]].ToString());
                         z = vars[SplitParameters[2]];
                         dp.DrawTriangle(x, y, z);
-                        GraphicsPanel.Refresh();
                     }
                     else if (vars.ContainsKey(SplitParameters[1]) && vars.ContainsKey(SplitParameters[2]))
                     {
@@ -366,7 +359,6 @@ namespace Assignment
                         y = SetY(vars[SplitParameters[1]].ToString());
                         z = SetY(vars[SplitParameters[2]].ToString());
                         dp.DrawTriangle(x, y, z);
-                        GraphicsPanel.Refresh();
                     }
                     else if (vars.ContainsKey(SplitParameters[0]) && vars.ContainsKey(SplitParameters[2]))
                     {
@@ -374,7 +366,6 @@ namespace Assignment
                         y = SetY(SplitParameters[1]);
                         z = SetY(vars[SplitParameters[2]].ToString());
                         dp.DrawTriangle(x, y, z);
-                        GraphicsPanel.Refresh();
                     }
                     else if (vars.ContainsKey(SplitParameters[0]))
                     {
@@ -382,7 +373,6 @@ namespace Assignment
                         y = SetY(SplitParameters[1]);
                         z = vars[SplitParameters[2]];
                         dp.DrawTriangle(x, y, z);
-                        GraphicsPanel.Refresh();
                     }
                     else if (vars.ContainsKey(SplitParameters[1]))
                     {
@@ -390,7 +380,6 @@ namespace Assignment
                         y = SetY(vars[SplitParameters[1]].ToString());
                         z = vars[SplitParameters[2]];
                         dp.DrawTriangle(x, y, z);
-                        GraphicsPanel.Refresh();
                     }
                     else if (vars.ContainsKey(SplitParameters[2]))
                     {
@@ -398,7 +387,6 @@ namespace Assignment
                         y = SetY(SplitParameters[1]);
                         z = SetY(vars[SplitParameters[2]].ToString());
                         dp.DrawTriangle(x, y, z);
-                        GraphicsPanel.Refresh();
                     }
                     else
                     {
@@ -406,12 +394,11 @@ namespace Assignment
                         y = SetY(SplitParameters[1]);
                         z = int.Parse(SplitParameters[2]);
                         dp.DrawTriangle(x, y, z);
-                        GraphicsPanel.Refresh();
                     }
                 }
                 catch
                 {
-                    MessageBox.Show("Invalid parameters detected", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    Errors.Add("Invalid parameters deteced line " + LineNum);
                 }
             }
             else if (Command.Trim() == "Colour")
@@ -440,7 +427,6 @@ namespace Assignment
             else if (Command.Trim() == "Clear")
             {
                 dp.ClearPanel();
-                GraphicsPanel.Refresh();
             }
             else if (Command.Trim() == "Reset")
             {
@@ -478,7 +464,7 @@ namespace Assignment
                 }
                 catch
                 {
-                    MessageBox.Show("Invalid variable value", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    Errors.Add("Invalid input for variable line " + LineNum);
                 }
             }
             else if (split[1] == "+")
@@ -491,12 +477,12 @@ namespace Assignment
                     }
                     catch
                     {
-                        MessageBox.Show("Invalid input for variable: " + split[0], "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        Errors.Add("Invalid input for variable line " + LineNum);
                     }
                 }
                 else
                 {
-                    MessageBox.Show("Variable: " + split[0] + " doesn't exist", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    Errors.Add("Variable: " + split[0] + " doesn't exist line " + LineNum);
                 }
             }
             else if (split[1] == "-")
@@ -509,12 +495,12 @@ namespace Assignment
                     }
                     catch
                     {
-                        MessageBox.Show("Invalid input for variable: " + split[0], "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        Errors.Add("Invalid input for variable line " + LineNum);
                     }
                 }
                 else
                 {
-                    MessageBox.Show("Variable: " + split[0] + " doesn't exist", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    Errors.Add("Variable: " + split[0] + " doesn't exist line " + LineNum);
                 }
             }
             else if (split[1] == "*")
@@ -527,12 +513,12 @@ namespace Assignment
                     }
                     catch
                     {
-                        MessageBox.Show("Invalid input for variable: " + split[0], "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        Errors.Add("Invalid input for variable line " + LineNum);
                     }
                 }
                 else
                 {
-                    MessageBox.Show("Variable: " + split[0] + " doesn't exist", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    Errors.Add("Variable: " + split[0] + " doesn't exist line " + LineNum);
                 }
             }
             else if (split[1] == "/")
@@ -545,12 +531,12 @@ namespace Assignment
                     }
                     catch
                     {
-                        MessageBox.Show("Invalid input for variable: " + split[0], "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        Errors.Add("Invalid input for variable line " + LineNum);
                     }
                 }
                 else
                 {
-                    MessageBox.Show("Variable: " + split[0] + " doesn't exist", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    Errors.Add("Variable: " + split[0] + " doesn't exist line " + LineNum);
                 }
             }
         }
@@ -620,12 +606,12 @@ namespace Assignment
                 }
                 else
                 {
-                    MessageBox.Show("Variable: " + split[0] + " doesn't exist", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    Errors.Add("Variable: " + split[0] + " doesn't exist line " + LineNum);
                 }
             }
             catch
             {
-                MessageBox.Show("Invalid value for comparison", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                Errors.Add("Invalid value for comparison line " + LineNum);
             }
         }
     }

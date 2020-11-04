@@ -35,6 +35,7 @@
             this.Menu_Load = new System.Windows.Forms.ToolStripMenuItem();
             this.TxtBox_Commands = new System.Windows.Forms.TextBox();
             this.GraphicsPanel = new System.Windows.Forms.Panel();
+            this.ConsoleBox = new System.Windows.Forms.TextBox();
             this.MenuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -68,14 +69,14 @@
             // Menu_Save
             // 
             this.Menu_Save.Name = "Menu_Save";
-            this.Menu_Save.Size = new System.Drawing.Size(180, 22);
+            this.Menu_Save.Size = new System.Drawing.Size(100, 22);
             this.Menu_Save.Text = "Save";
             this.Menu_Save.Click += new System.EventHandler(this.Menu_Save_Click);
             // 
             // Menu_Load
             // 
             this.Menu_Load.Name = "Menu_Load";
-            this.Menu_Load.Size = new System.Drawing.Size(180, 22);
+            this.Menu_Load.Size = new System.Drawing.Size(100, 22);
             this.Menu_Load.Text = "Load";
             this.Menu_Load.Click += new System.EventHandler(this.Menu_Load_Click);
             // 
@@ -96,11 +97,20 @@
             this.GraphicsPanel.TabIndex = 3;
             this.GraphicsPanel.Paint += new System.Windows.Forms.PaintEventHandler(this.GraphicsPanel_Paint);
             // 
+            // ConsoleBox
+            // 
+            this.ConsoleBox.Location = new System.Drawing.Point(0, 567);
+            this.ConsoleBox.Multiline = true;
+            this.ConsoleBox.Name = "ConsoleBox";
+            this.ConsoleBox.Size = new System.Drawing.Size(788, 79);
+            this.ConsoleBox.TabIndex = 4;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(788, 561);
+            this.ClientSize = new System.Drawing.Size(788, 645);
+            this.Controls.Add(this.ConsoleBox);
             this.Controls.Add(this.GraphicsPanel);
             this.Controls.Add(this.TxtBox_Commands);
             this.Controls.Add(this.TxtBox_Input);
@@ -124,6 +134,7 @@
         private System.Windows.Forms.ToolStripMenuItem Menu_Load;
         private System.Windows.Forms.TextBox TxtBox_Commands;
         private System.Windows.Forms.Panel GraphicsPanel;
+        private System.Windows.Forms.TextBox ConsoleBox;
     }
 }
 

@@ -31,10 +31,32 @@ namespace Assignment
                 if (TxtBox_Input.Text.Trim() == "run")
                 {
                     p.ParseTextBox(TxtBox_Commands);
+                    if(p.Errors.Count == 0)
+                    {
+                        GraphicsPanel.Refresh();
+                    }
+                    else
+                    {
+                        foreach(string l in p.Errors)
+                        {
+                            ConsoleBox.AppendText(l + Environment.NewLine);
+                        }
+                    }
                 }
                 else
                 {
                     p.ParseCommand(TxtBox_Input.Text);
+                    if (p.Errors.Count == 0)
+                    {
+                        GraphicsPanel.Refresh();
+                    }
+                    else
+                    {
+                        foreach (string l in p.Errors)
+                        {
+                            ConsoleBox.AppendText(l + Environment.NewLine);
+                        }
+                    }
                 }
             }
         } 
