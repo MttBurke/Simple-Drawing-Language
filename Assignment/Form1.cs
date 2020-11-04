@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.IO;
 
 namespace Assignment
 {
@@ -44,5 +45,28 @@ namespace Assignment
             g.DrawImageUnscaled(MyBitmap, 0, 0);
         }
 
+        private void Menu_Save_Click(object sender, EventArgs e)
+        {
+            SaveFileDialog SaveFile = new SaveFileDialog();
+            SaveFile.Filter = "txt files (*.txt)|*.txt";
+            SaveFile.RestoreDirectory = true;
+
+            if (SaveFile.ShowDialog() == DialogResult.OK)
+            {
+                File.WriteAllText(SaveFile.FileName, TxtBox_Commands.Text);
+            }
+        }
+
+        private void Menu_Load_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog LoadFile = new OpenFileDialog();
+            LoadFile.Filter = "txt files (*.txt)|*.txt";
+            LoadFile.RestoreDirectory = true;
+
+            if (LoadFile.ShowDialog() == DialogResult.OK)
+            {
+                TxtBox_Commands.Text = File.ReadAllText(LoadFile.FileName);
+            }
+        }
     }
 }

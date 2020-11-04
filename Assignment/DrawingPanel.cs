@@ -8,14 +8,14 @@ using System.Windows.Forms;
 
 namespace Assignment
 {
-    class DrawingPanel
+    public class DrawingPanel
     {
 
         Pen p = new Pen(Color.Black);
         Graphics g = null;
-        bool Fill = false; //shapes drawn with fill = true will be filled in
-        int PenX = 0;
-        int PenY = 0;
+        public bool Fill = false; //shapes drawn with fill = true will be filled in
+        public int PenX = 0;
+        public int PenY = 0;
 
         public DrawingPanel(Panel InputPanel, Bitmap InputBitmap)
         {
@@ -49,7 +49,9 @@ namespace Assignment
 
         public void DrawTriangle(int Input1, int Input2, int Input3)
         {
-            
+            /*
+             * 3 Points for each corner of triangle
+             */
             Point Point1 = new Point(PenX - Input1, PenY + Input1);
             Point Point2 = new Point(PenX, PenY - Input2);
             Point Point3 = new Point(PenX + Input3, PenY + Input3);
@@ -94,6 +96,17 @@ namespace Assignment
             {
                 Fill = false;
             }
+        }
+
+        public void ResetPen()
+        {
+            PenX = 0;
+            PenY = 0;
+        }
+
+        public void ClearPanel()
+        {
+            g.Clear(Color.White);
         }
     }
 }

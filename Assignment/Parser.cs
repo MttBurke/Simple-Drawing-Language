@@ -9,7 +9,7 @@ using System.Text.RegularExpressions;
 
 namespace Assignment
 {
-    class Parser
+    public class Parser
     {
 
         DrawingPanel dp;
@@ -29,7 +29,7 @@ namespace Assignment
         {
             /*
              * Splitting input text into command and parameters
-             * */
+             */
             try
             {
                 Command = InputCommand.Substring(0, InputCommand.IndexOf(' '));

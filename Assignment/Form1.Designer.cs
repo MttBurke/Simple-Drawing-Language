@@ -68,14 +68,16 @@
             // Menu_Save
             // 
             this.Menu_Save.Name = "Menu_Save";
-            this.Menu_Save.Size = new System.Drawing.Size(100, 22);
+            this.Menu_Save.Size = new System.Drawing.Size(180, 22);
             this.Menu_Save.Text = "Save";
+            this.Menu_Save.Click += new System.EventHandler(this.Menu_Save_Click);
             // 
             // Menu_Load
             // 
             this.Menu_Load.Name = "Menu_Load";
-            this.Menu_Load.Size = new System.Drawing.Size(100, 22);
+            this.Menu_Load.Size = new System.Drawing.Size(180, 22);
             this.Menu_Load.Text = "Load";
+            this.Menu_Load.Click += new System.EventHandler(this.Menu_Load_Click);
             // 
             // TxtBox_Commands
             // 

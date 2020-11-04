@@ -1,0 +1,2 @@
+D:\Year 3\repos\Assignment\AssignmentUnitTests\obj\Debug\AssignmentUnitTests.csprojAssemblyReference.cache
+D:\Year 3\repos\Assignment\AssignmentUnitTests\obj\Debug\AssignmentUnitTests.csproj.CoreCompileInputs.cache
