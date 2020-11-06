@@ -54,5 +54,36 @@ namespace AssignmentTests
 
             p.ParseCommand(txtbox.Text);
         }
+
+        /*
+         * Testing and if statement, syntax is correct and x is less than 100 so statement should be valid
+         */
+        [TestMethod]
+        public void TestIfStatementValid()
+        {
+            TextBox txtbox = new TextBox();
+            Bitmap bitmap = new Bitmap(800, 600);
+            txtbox.Text = "x = 10\r\nIf x < 100";
+            ExtendedParser p = new ExtendedParser(new Panel(), bitmap);
+
+            p.ParseTextBox(txtbox);
+            Assert.IsFalse(p.EndifFound);
+            Assert.IsTrue(p.IfStatementValid);
+        }
+
+        /*
+         * Testing for undefined variable that is trying to be modified, should have an error in syntax
+         */
+        [TestMethod]
+        public void TestModifyingUndefinedVariable()
+        {
+            TextBox txtbox = new TextBox();
+            Bitmap bitmap = new Bitmap(800, 600);
+            txtbox.Text = "x * 20";
+            ExtendedParser p = new ExtendedParser(new Panel(), bitmap);
+
+            p.ParseTextBox(txtbox);
+            Assert.AreEqual(1, p.Errors.Count);
+        }
     }
 }

@@ -45,6 +45,7 @@ namespace Assignment
                 }
                 else
                 {
+                    p.Errors.Clear();
                     p.ParseCommand(TxtBox_Input.Text);
                     if (p.Errors.Count == 0)
                     {

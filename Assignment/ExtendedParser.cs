@@ -16,8 +16,8 @@ namespace Assignment
         Panel GraphicsPanel;
         Dictionary<string, int> vars = new Dictionary<string, int>();
         Regex VariableName = new Regex("\\w*\\d*");
-        bool IfStatementValid = false; //Used for IF statements, Skips commands if the IF statement isn't correct until and ENDIF is found
-        bool EndifFound = true;
+        public bool IfStatementValid = false; //Used for IF statements, Skips commands if the IF statement isn't correct until and ENDIF is found
+        public bool EndifFound = true;
         bool LoopStatement = false;
         string[] LineArray;
         int LineNum = 0;
