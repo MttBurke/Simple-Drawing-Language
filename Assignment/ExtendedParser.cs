@@ -22,6 +22,7 @@ namespace Assignment
         string[] LineArray;
         int LineNum = 0;
         public List<string> Errors = new List<string>();
+        List<Method> ListMethods = new List<Method>();
 
         public ExtendedParser(Panel InputPanel, Bitmap InputBitmap) : base(InputPanel, InputBitmap)
         {
@@ -152,7 +153,18 @@ namespace Assignment
                 }
                 else if (split[0] == "Method")
                 {
-
+                    List<string> Commands = new List<string>();
+                    Method method = new Method();
+                    method.Name = split[1];
+                    int EndLineNum = Array.IndexOf(LineArray, "Endmethod");
+                    for (int i = LineNum + 1; i < EndLineNum; i++)
+                    {
+                        Commands.Add(LineArray[i]);
+                    }
+                    method.Commands = Commands;
+                    method.Parameters = GetParameters(split[2]);
+                    ListMethods.Add(method);
+                    LineNum = EndLineNum;
                 }
                 else if (split[0] == "drawTo" || split[0] == "moveTo" || split[0] == "Rectangle" || split[0] == "Triangle" || split[0] == "Circle" || split[0] == "Fill" || split[0] == "Colour" || split[0] == "Clear" || split[0] == "Reset")
                 {
@@ -442,6 +454,18 @@ namespace Assignment
         private int SetY(string Input)
         {
             return int.Parse(Input);
+        }
+
+        private List<string> GetParameters(string input)
+        {
+            input = input.Replace("(", string.Empty).Replace(")", string.Empty);
+            List<string> Parameters = new List<string>();
+            string[] split = input.Split();
+            for (int i = 0; i < split.Length; i++)
+            {
+                Parameters.Add(split[i]);
+            }
+            return Parameters;
         }
 
         private void ParseVariable(string[] split)
