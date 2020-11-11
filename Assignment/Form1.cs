@@ -30,7 +30,7 @@ namespace Assignment
             {
                 if (TxtBox_Input.Text.Trim() == "run")
                 {
-                    p.ParseTextBox(TxtBox_Commands);
+                    p.ParseTextBox(TxtBox_Commands.Lines);
                     if(p.Errors.Count == 0)
                     {
                         GraphicsPanel.Refresh();

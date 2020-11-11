@@ -19,10 +19,10 @@ namespace Assignment
         public bool IfStatementValid = false; //Used for IF statements, Skips commands if the IF statement isn't correct until and ENDIF is found
         public bool EndifFound = true;
         bool LoopStatement = false;
-        string[] LineArray;
         int LineNum = 0;
         public List<string> Errors = new List<string>();
         List<Method> ListMethods = new List<Method>();
+        List<string> PanelCommands = new List<string> { "drawTo", "moveTo", "Rectangle", "Triangle", "Circle", "Clear", "Fill", "Reset", "Colour" };
 
         public ExtendedParser(Panel InputPanel, Bitmap InputBitmap) : base(InputPanel, InputBitmap)
         {
@@ -30,9 +30,8 @@ namespace Assignment
             dp = new DrawingPanel(InputPanel, InputBitmap);
         }
 
-        public void ParseTextBox(TextBox Inputbox)
+        public void ParseTextBox(string[] LineArray)
         {
-            LineArray = Inputbox.Lines;
             int LoopLineNum = 0;
             int EndLoopLine = Array.IndexOf(LineArray, "Endloop");
             /*
@@ -153,20 +152,41 @@ namespace Assignment
                 }
                 else if (split[0] == "Method")
                 {
-                    List<string> Commands = new List<string>();
+                    List<string> CommandsToAdd = new List<string>();
                     Method method = new Method();
                     method.Name = split[1];
                     int EndLineNum = Array.IndexOf(LineArray, "Endmethod");
+
                     for (int i = LineNum + 1; i < EndLineNum; i++)
                     {
-                        Commands.Add(LineArray[i]);
+                        CommandsToAdd.Add(LineArray[i]);
                     }
-                    method.Commands = Commands;
+
+                    method.Commands = CommandsToAdd;
                     method.Parameters = GetParameters(split[2]);
                     ListMethods.Add(method);
                     LineNum = EndLineNum;
                 }
-                else if (split[0] == "drawTo" || split[0] == "moveTo" || split[0] == "Rectangle" || split[0] == "Triangle" || split[0] == "Circle" || split[0] == "Fill" || split[0] == "Colour" || split[0] == "Clear" || split[0] == "Reset")
+                else if (ListMethods.Any(method => method.Name == split[0]))
+                {
+                    List<string> CommandsToRun = new List<string>();
+                    var MethodToRun = ListMethods.First(method => method.Name == split[0]);
+                    int TempNum = LineNum;
+                    string[] ParamsToUse = GetParametersBetween(split[1]);
+
+                    if (MethodToRun.Parameters[0] == "")
+                    {
+                        CommandsToRun = MethodToRun.Commands;
+                    }
+                    else if (MethodToRun.Parameters.Count == ParamsToUse.Length - 1)
+                    {
+
+                    }
+
+                    ParseTextBox(CommandsToRun.ToArray());
+                    LineNum = TempNum;
+                }
+                else if (PanelCommands.Contains(split[0]))
                 {
                     if ((IfStatementValid == true && EndifFound == false) || (EndifFound == true && IfStatementValid == false))
                     {
@@ -220,26 +240,26 @@ namespace Assignment
                 {
                     if (vars.ContainsKey(SplitParameters[0]) && vars.ContainsKey(SplitParameters[1]))
                     {
-                        x = SetX(vars[SplitParameters[0]].ToString());
-                        y = SetY(vars[SplitParameters[1]].ToString());
+                        x = vars[SplitParameters[0]];
+                        y = vars[SplitParameters[1]];
                         dp.DrawLine(x, y);
                     }
                     else if (vars.ContainsKey(SplitParameters[0]))
                     {
-                        x = SetX(vars[SplitParameters[0]].ToString());
-                        y = SetY(SplitParameters[1]);
+                        x = vars[SplitParameters[0]];
+                        y = int.Parse(SplitParameters[1]);
                         dp.DrawLine(x, y);
                     }
                     else if (vars.ContainsKey(SplitParameters[1]))
                     {
-                        x = SetX(SplitParameters[0]);
-                        y = SetY(vars[SplitParameters[1]].ToString());
+                        x = int.Parse(SplitParameters[0]);
+                        y = vars[SplitParameters[1]];
                         dp.DrawLine(x, y);
                     }
                     else
                     {
-                        x = SetX(SplitParameters[0]);
-                        y = SetY(SplitParameters[1]);
+                        x = int.Parse(SplitParameters[0]);
+                        y = int.Parse(SplitParameters[1]);
                         dp.DrawLine(x, y);
                     }
                 }
@@ -254,26 +274,26 @@ namespace Assignment
                 {
                     if (vars.ContainsKey(SplitParameters[0]) && vars.ContainsKey(SplitParameters[1]))
                     {
-                        x = SetX(vars[SplitParameters[0]].ToString());
-                        y = SetY(vars[SplitParameters[1]].ToString());
+                        x = vars[SplitParameters[0]];
+                        y = vars[SplitParameters[1]];
                         dp.DrawRectangle(x, y);
                     }
                     else if (vars.ContainsKey(SplitParameters[0]))
                     {
-                        x = SetX(vars[SplitParameters[0]].ToString());
-                        y = SetY(SplitParameters[1]);
+                        x = vars[SplitParameters[0]];
+                        y = int.Parse(SplitParameters[1]);
                         dp.DrawRectangle(x, y);
                     }
                     else if (vars.ContainsKey(SplitParameters[1]))
                     {
-                        x = SetX(SplitParameters[0]);
-                        y = SetY(vars[SplitParameters[1]].ToString());
+                        x = int.Parse(SplitParameters[0]);
+                        y = vars[SplitParameters[1]];
                         dp.DrawRectangle(x, y);
                     }
                     else
                     {
-                        x = SetX(SplitParameters[0]);
-                        y = SetY(SplitParameters[1]);
+                        x = int.Parse(SplitParameters[0]);
+                        y = int.Parse(SplitParameters[1]);
                         dp.DrawRectangle(x, y);
                     }
                 }
@@ -288,26 +308,26 @@ namespace Assignment
                 {
                     if (vars.ContainsKey(SplitParameters[0]) && vars.ContainsKey(SplitParameters[1]))
                     {
-                        x = SetX(vars[SplitParameters[0]].ToString());
-                        y = SetY(vars[SplitParameters[1]].ToString());
+                        x = vars[SplitParameters[0]];
+                        y = vars[SplitParameters[1]];
                         dp.MoveTo(x, y);
                     }
                     else if (vars.ContainsKey(SplitParameters[0]))
                     {
-                        x = SetX(vars[SplitParameters[0]].ToString());
-                        y = SetY(SplitParameters[1]);
+                        x = vars[SplitParameters[0]];
+                        y = int.Parse(SplitParameters[1]);
                         dp.MoveTo(x, y);
                     }
                     else if (vars.ContainsKey(SplitParameters[1]))
                     {
-                        x = SetX(SplitParameters[0]);
-                        y = SetY(vars[SplitParameters[1]].ToString());
+                        x = int.Parse(SplitParameters[0]);
+                        y = vars[SplitParameters[1]];
                         dp.MoveTo(x, y);
                     }
                     else
                     {
-                        x = SetX(SplitParameters[0]);
-                        y = SetY(SplitParameters[1]);
+                        x = int.Parse(SplitParameters[0]);
+                        y = int.Parse(SplitParameters[1]);
                         dp.MoveTo(x, y);
                     }
                 }
@@ -322,12 +342,12 @@ namespace Assignment
                 {
                     if (vars.ContainsKey(SplitParameters[0]))
                     {
-                        x = SetX(vars[SplitParameters[0]].ToString());
+                        x = vars[SplitParameters[0]];
                         dp.DrawCircle(x);
                     }
                     else
                     {
-                        x = SetX(SplitParameters[0]);
+                        x = int.Parse(SplitParameters[0]);
                         dp.DrawCircle(x);
                     }
                 }
@@ -353,57 +373,57 @@ namespace Assignment
                 {
                     if (vars.ContainsKey(SplitParameters[0]) && vars.ContainsKey(SplitParameters[1]) && vars.ContainsKey(SplitParameters[2]))
                     {
-                        x = SetX(vars[SplitParameters[0]].ToString());
-                        y = SetY(vars[SplitParameters[1]].ToString());
-                        z = SetY(vars[SplitParameters[2]].ToString());
+                        x = vars[SplitParameters[0]];
+                        y = vars[SplitParameters[1]];
+                        z = vars[SplitParameters[2]];
                         dp.DrawTriangle(x, y, z);
                     }
                     else if (vars.ContainsKey(SplitParameters[0]) && vars.ContainsKey(SplitParameters[1]))
                     {
-                        x = SetX(vars[SplitParameters[0]].ToString());
-                        y = SetY(vars[SplitParameters[1]].ToString());
-                        z = vars[SplitParameters[2]];
+                        x = vars[SplitParameters[0]];
+                        y = vars[SplitParameters[1]];
+                        z = int.Parse(SplitParameters[2]);
                         dp.DrawTriangle(x, y, z);
                     }
                     else if (vars.ContainsKey(SplitParameters[1]) && vars.ContainsKey(SplitParameters[2]))
                     {
-                        x = SetX(SplitParameters[0]);
-                        y = SetY(vars[SplitParameters[1]].ToString());
-                        z = SetY(vars[SplitParameters[2]].ToString());
+                        x = int.Parse(SplitParameters[0]);
+                        y = vars[SplitParameters[1]];
+                        z = vars[SplitParameters[2]];
                         dp.DrawTriangle(x, y, z);
                     }
                     else if (vars.ContainsKey(SplitParameters[0]) && vars.ContainsKey(SplitParameters[2]))
                     {
-                        x = SetX(vars[SplitParameters[0]].ToString());
-                        y = SetY(SplitParameters[1]);
-                        z = SetY(vars[SplitParameters[2]].ToString());
+                        x = vars[SplitParameters[0]];
+                        y = int.Parse(SplitParameters[1]);
+                        z = vars[SplitParameters[2]];
                         dp.DrawTriangle(x, y, z);
                     }
                     else if (vars.ContainsKey(SplitParameters[0]))
                     {
-                        x = SetX(vars[SplitParameters[0]].ToString());
-                        y = SetY(SplitParameters[1]);
-                        z = vars[SplitParameters[2]];
+                        x = vars[SplitParameters[0]];
+                        y = int.Parse(SplitParameters[1]);
+                        z = int.Parse(SplitParameters[2]);
                         dp.DrawTriangle(x, y, z);
                     }
                     else if (vars.ContainsKey(SplitParameters[1]))
                     {
-                        x = SetX(SplitParameters[0]);
-                        y = SetY(vars[SplitParameters[1]].ToString());
-                        z = vars[SplitParameters[2]];
+                        x = int.Parse(SplitParameters[0]);
+                        y = vars[SplitParameters[1]];
+                        z = int.Parse(SplitParameters[2]);
                         dp.DrawTriangle(x, y, z);
                     }
                     else if (vars.ContainsKey(SplitParameters[2]))
                     {
-                        x = SetX(SplitParameters[0]);
-                        y = SetY(SplitParameters[1]);
-                        z = SetY(vars[SplitParameters[2]].ToString());
+                        x = int.Parse(SplitParameters[0]);
+                        y = int.Parse(SplitParameters[1]);
+                        z = vars[SplitParameters[2]];
                         dp.DrawTriangle(x, y, z);
                     }
                     else
                     {
-                        x = SetX(SplitParameters[0]);
-                        y = SetY(SplitParameters[1]);
+                        x = int.Parse(SplitParameters[0]);
+                        y = int.Parse(SplitParameters[1]);
                         z = int.Parse(SplitParameters[2]);
                         dp.DrawTriangle(x, y, z);
                     }
@@ -446,26 +466,22 @@ namespace Assignment
             }
         }
 
-        private int SetX(string Input)
-        {
-            return int.Parse(Input);
-        }
-
-        private int SetY(string Input)
-        {
-            return int.Parse(Input);
-        }
-
         private List<string> GetParameters(string input)
         {
             input = input.Replace("(", string.Empty).Replace(")", string.Empty);
             List<string> Parameters = new List<string>();
-            string[] split = input.Split();
+            string[] split = input.Split(',');
             for (int i = 0; i < split.Length; i++)
             {
                 Parameters.Add(split[i]);
             }
             return Parameters;
+        }
+
+        private string[] GetParametersBetween(string input)
+        {
+            input = input.Replace("(", string.Empty).Replace(")", string.Empty);
+            return input.Split(',');
         }
 
         private void ParseVariable(string[] split)
