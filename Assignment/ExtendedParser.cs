@@ -174,17 +174,31 @@ namespace Assignment
                     int TempNum = LineNum;
                     string[] ParamsToUse = GetParametersBetween(split[1]);
 
-                    if (MethodToRun.Parameters[0] == "")
+                    try
                     {
-                        CommandsToRun = MethodToRun.Commands;
+                        if (MethodToRun.Parameters[0] == "")
+                        {
+                            CommandsToRun = MethodToRun.Commands;
+                        }
+                        else if (MethodToRun.Parameters.Count == ParamsToUse.Length)
+                        {
+                            for (int i = 0; i < ParamsToUse.Length; i++)
+                            {
+                                if (!vars.ContainsKey(ParamsToUse[i]))
+                                {
+                                    vars.Add(MethodToRun.Parameters[i], int.Parse(ParamsToUse[i]));
+                                }
+                            }
+                            CommandsToRun = MethodToRun.Commands;
+                        }
+
+                        ParseTextBox(CommandsToRun.ToArray());
+                        LineNum = TempNum;
                     }
-                    else if (MethodToRun.Parameters.Count == ParamsToUse.Length - 1)
+                    catch
                     {
-
+                        Errors.Add("Invalid parameter for Method: " + MethodToRun.Name);
                     }
-
-                    ParseTextBox(CommandsToRun.ToArray());
-                    LineNum = TempNum;
                 }
                 else if (PanelCommands.Contains(split[0]))
                 {
@@ -468,6 +482,9 @@ namespace Assignment
 
         private List<string> GetParameters(string input)
         {
+            /*
+             * getting parameters between () then splitting  them to add to a list for method
+             */
             input = input.Replace("(", string.Empty).Replace(")", string.Empty);
             List<string> Parameters = new List<string>();
             string[] split = input.Split(',');
@@ -480,6 +497,9 @@ namespace Assignment
 
         private string[] GetParametersBetween(string input)
         {
+            /*
+             * Splitting parameters between () to be used in the method command
+             */
             input = input.Replace("(", string.Empty).Replace(")", string.Empty);
             return input.Split(',');
         }
