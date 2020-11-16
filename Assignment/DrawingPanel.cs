@@ -8,6 +8,9 @@ using System.Windows.Forms;
 
 namespace Assignment
 {
+    /// <summary>
+    /// Class used for drawing shapes that has been parsed
+    /// </summary>
     public class DrawingPanel
     {
 
@@ -22,6 +25,11 @@ namespace Assignment
             g = Graphics.FromImage(InputBitmap);
         }
 
+        /// <summary>
+        /// Draw a line from current point to input points
+        /// </summary>
+        /// <param name="InX">new X pos</param>
+        /// <param name="InY">new Y pos</param>
         public void DrawLine(int InX, int InY)
         {
             g.DrawLine(p, PenX, PenY, InX, InY);
@@ -29,12 +37,22 @@ namespace Assignment
             PenY = InY;
         }
 
+        /// <summary>
+        /// Move pen to a new point without drawing
+        /// </summary>
+        /// <param name="NewX">new X pos</param>
+        /// <param name="NewY">new Y pos</param>
         public void MoveTo(int NewX, int NewY)
         {
             PenX = NewX;
             PenY = NewY;
         }
 
+        /// <summary>
+        /// Draw a rectangle from current point
+        /// </summary>
+        /// <param name="InWidth">width of rectangle</param>
+        /// <param name="InHeight">height of rectangle</param>
         public void DrawRectangle(int InWidth, int InHeight)
         {
             if(Fill == true)
@@ -47,6 +65,12 @@ namespace Assignment
             }        
         }
 
+        /// <summary>
+        /// Draw a triangle with 3 points
+        /// </summary>
+        /// <param name="Input1">first point</param>
+        /// <param name="Input2">second point</param>
+        /// <param name="Input3">third point</param>
         public void DrawTriangle(int Input1, int Input2, int Input3)
         {
             /*
@@ -69,6 +93,10 @@ namespace Assignment
             }
         }
 
+        /// <summary>
+        /// Draw a circle
+        /// </summary>
+        /// <param name="InRadius">Size of circle</param>
         public void DrawCircle(int InRadius)
         {
             if(Fill == true)
@@ -81,11 +109,19 @@ namespace Assignment
             }          
         }
 
+        /// <summary>
+        /// Change pen colour
+        /// </summary>
+        /// <param name="InColour">new Colour</param>
         public void PenColour(Color InColour)
         {
             p.Color = InColour;
         }
 
+        /// <summary>
+        /// Set fill shape on or off
+        /// </summary>
+        /// <param name="Input">0 or 1</param>
         public void SetFill(int Input)
         {
             if (Input == 1)
@@ -98,12 +134,18 @@ namespace Assignment
             }
         }
 
+        /// <summary>
+        /// Reset pen position to 0,0
+        /// </summary>
         public void ResetPen()
         {
             PenX = 0;
             PenY = 0;
         }
 
+        /// <summary>
+        /// Clear drawing panel 
+        /// </summary>
         public void ClearPanel()
         {
             g.Clear(Color.White);

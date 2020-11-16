@@ -9,6 +9,10 @@ using System.Text.RegularExpressions;
 
 namespace Assignment
 {
+    /// <summary>
+    /// The ExtendedParse class inherited from Parser class
+    /// used to parse a command or commands from a textbox.
+    /// </summary>
     public class ExtendedParser : Parser
     {
 
@@ -30,6 +34,10 @@ namespace Assignment
             dp = new DrawingPanel(InputPanel, InputBitmap);
         }
 
+        /// <summary>
+        /// Parses commands from multiple lines of code within an array of string.
+        /// </summary>
+        /// <param name="LineArray">Array of string containing all the lines used in program</param>
         public void ParseTextBox(string[] LineArray)
         {
             int LoopLineNum = 0;
@@ -224,6 +232,10 @@ namespace Assignment
             }
         }
 
+        /// <summary>
+        /// Parses individual commands for drawing and not including commands used for sequence, iteration, and selection.
+        /// </summary>
+        /// <param name="InputCommand">String of command including the parameters to be split</param>
         public override void ParseCommand(string InputCommand)
         {
             string Command = " ";
@@ -480,6 +492,11 @@ namespace Assignment
             }
         }
 
+        /// <summary>
+        /// Get parameters between () then splitting them to be added to a list for creation of a method
+        /// </summary>
+        /// <param name="input">Line where Method keyword has been used</param>
+        /// <returns>A list of string with parameters to be added to create a method</returns>
         private List<string> GetParameters(string input)
         {
             /*
@@ -495,6 +512,11 @@ namespace Assignment
             return Parameters;
         }
 
+        /// <summary>
+        /// Gets parameters between () to be used when a created method has been called. 
+        /// </summary>
+        /// <param name="input">Line where created method name has been used</param>
+        /// <returns>An array of string containing all parameters from a method to be used</returns>
         private string[] GetParametersBetween(string input)
         {
             /*
@@ -504,6 +526,10 @@ namespace Assignment
             return input.Split(',');
         }
 
+        /// <summary>
+        /// Used to parse a line where a variable has been declared
+        /// </summary>
+        /// <param name="split">Line where variable has been declared to be parsed</param>
         private void ParseVariable(string[] split)
         {
             /*
@@ -601,6 +627,10 @@ namespace Assignment
             }
         }
 
+        /// <summary>
+        /// Parsing an IF statement
+        /// </summary>
+        /// <param name="split">Line where IF statement has been mentioned</param>
         private void ParseIf(string[] split)
         {
             /*

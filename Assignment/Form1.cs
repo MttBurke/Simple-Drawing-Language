@@ -74,9 +74,16 @@ namespace Assignment
             SaveFile.Filter = "txt files (*.txt)|*.txt";
             SaveFile.RestoreDirectory = true;
 
-            if (SaveFile.ShowDialog() == DialogResult.OK)
+            try
             {
-                File.WriteAllText(SaveFile.FileName, TxtBox_Commands.Text);
+                if (SaveFile.ShowDialog() == DialogResult.OK)
+                {
+                    File.WriteAllText(SaveFile.FileName, TxtBox_Commands.Text);
+                }
+            }
+            catch
+            {
+                MessageBox.Show("Error saving file", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
