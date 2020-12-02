@@ -17,7 +17,6 @@ namespace Assignment
     {
 
         public DrawingPanel dp;
-        Panel GraphicsPanel;
         Dictionary<string, int> vars = new Dictionary<string, int>();
         Regex VariableName = new Regex("\\w*\\d*");
         public bool IfStatementValid = false; //Used for IF statements, Skips commands if the IF statement isn't correct until and ENDIF is found
@@ -30,7 +29,6 @@ namespace Assignment
 
         public ExtendedParser(Panel InputPanel, Bitmap InputBitmap) : base(InputPanel, InputBitmap)
         {
-            GraphicsPanel = InputPanel;
             dp = new DrawingPanel(InputPanel, InputBitmap);
         }
 
@@ -161,19 +159,28 @@ namespace Assignment
                 else if (split[0] == "Method")
                 {
                     List<string> CommandsToAdd = new List<string>();
-                    Method method = new Method();
-                    method.Name = split[1];
+                    Method method = new Method
+                    {
+                        Name = split[1]
+                    };
                     int EndLineNum = Array.IndexOf(LineArray, "Endmethod");
 
-                    for (int i = LineNum + 1; i < EndLineNum; i++)
+                    if (EndLineNum !=  -1)
                     {
-                        CommandsToAdd.Add(LineArray[i]);
-                    }
+                        for (int i = LineNum + 1; i < EndLineNum; i++)
+                        {
+                            CommandsToAdd.Add(LineArray[i]);
+                        }
 
-                    method.Commands = CommandsToAdd;
-                    method.Parameters = GetParameters(split[2]);
-                    ListMethods.Add(method);
-                    LineNum = EndLineNum;
+                        method.Commands = CommandsToAdd;
+                        method.Parameters = GetParameters(split[2]);
+                        ListMethods.Add(method);
+                        LineNum = EndLineNum;
+                    }
+                    else
+                    {
+                        Errors.Add("Endmethod not found on for method: " + method.Name + " on line: " + LineNum);
+                    }
                 }
                 else if (ListMethods.Any(method => method.Name == split[0]))
                 {
@@ -198,6 +205,10 @@ namespace Assignment
                                 }
                             }
                             CommandsToRun = MethodToRun.Commands;
+                        }
+                        else
+                        {
+                            Errors.Add("Invalid parameters for Method: " + MethodToRun.Name);
                         }
 
                         ParseTextBox(CommandsToRun.ToArray());
@@ -640,6 +651,7 @@ namespace Assignment
              * if true then execute everything after if statement
              * else do nothing until Endif is found
              */
+            EndifFound = false;
             try
             {
                 int ValueToCompare = int.Parse(split[3]);
@@ -649,7 +661,6 @@ namespace Assignment
                     {
                         if (vars[split[1]] == ValueToCompare)
                         {
-                            EndifFound = false;
                             IfStatementValid = true;
                         }
                     }
@@ -657,7 +668,6 @@ namespace Assignment
                     {
                         if (vars[split[1]] > ValueToCompare)
                         {
-                            EndifFound = false;
                             IfStatementValid = true;
                         }
                     }
@@ -665,7 +675,6 @@ namespace Assignment
                     {
                         if (vars[split[1]] >= ValueToCompare)
                         {
-                            EndifFound = false;
                             IfStatementValid = true;
                         }
                     }
@@ -673,7 +682,6 @@ namespace Assignment
                     {
                         if (vars[split[1]] < ValueToCompare)
                         {
-                            EndifFound = false;
                             IfStatementValid = true;
                         }
                     }
@@ -681,7 +689,6 @@ namespace Assignment
                     {
                         if (vars[split[1]] <= ValueToCompare)
                         {
-                            EndifFound = false;
                             IfStatementValid = true;
                         }
                     }
@@ -689,7 +696,6 @@ namespace Assignment
                     {
                         if (vars[split[1]] != ValueToCompare)
                         {
-                            EndifFound = false;
                             IfStatementValid = true;
                         }
                     }

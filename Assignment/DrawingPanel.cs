@@ -19,7 +19,7 @@ namespace Assignment
         public bool Fill = false; //shapes drawn with fill = true will be filled in
         public int PenX = 0;
         public int PenY = 0;
-
+       
         public DrawingPanel(Panel InputPanel, Bitmap InputBitmap)
         {
             g = Graphics.FromImage(InputBitmap);
@@ -73,9 +73,7 @@ namespace Assignment
         /// <param name="Input3">third point</param>
         public void DrawTriangle(int Input1, int Input2, int Input3)
         {
-            /*
-             * 3 Points for each corner of triangle
-             */
+
             Point Point1 = new Point(PenX - Input1, PenY + Input1);
             Point Point2 = new Point(PenX, PenY - Input2);
             Point Point3 = new Point(PenX + Input3, PenY + Input3);
