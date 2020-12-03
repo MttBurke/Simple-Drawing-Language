@@ -66,7 +66,7 @@ namespace AssignmentTests
             txtbox.Text = "x = 10\r\nIf x < 100";
             ExtendedParser p = new ExtendedParser(new Panel(), bitmap);
 
-            p.ParseTextBox(txtbox);
+            p.ParseTextBox(txtbox.Lines);
             Assert.IsFalse(p.EndifFound);
             Assert.IsTrue(p.IfStatementValid);
         }
@@ -82,7 +82,7 @@ namespace AssignmentTests
             txtbox.Text = "x * 20";
             ExtendedParser p = new ExtendedParser(new Panel(), bitmap);
 
-            p.ParseTextBox(txtbox);
+            p.ParseTextBox(txtbox.Lines);
             Assert.AreEqual(1, p.Errors.Count);
         }
     }

@@ -19,10 +19,12 @@ namespace Assignment
         public bool Fill = false; //shapes drawn with fill = true will be filled in
         public int PenX = 0;
         public int PenY = 0;
+        CommandFactory factory;
        
         public DrawingPanel(Panel InputPanel, Bitmap InputBitmap)
         {
             g = Graphics.FromImage(InputBitmap);
+            factory = new CommandFactory(g);
         }
 
         /// <summary>
@@ -32,7 +34,8 @@ namespace Assignment
         /// <param name="InY">new Y pos</param>
         public void DrawLine(int InX, int InY)
         {
-            g.DrawLine(p, PenX, PenY, InX, InY);
+            var Line = factory.MakeLine(p, PenX, PenY, InX, InY);
+            Line.Execute();
             PenX = InX; //Setting pen position to end position of line
             PenY = InY;
         }
@@ -55,14 +58,8 @@ namespace Assignment
         /// <param name="InHeight">height of rectangle</param>
         public void DrawRectangle(int InWidth, int InHeight)
         {
-            if(Fill == true)
-            {
-                g.FillRectangle(p.Brush, PenX, PenY, InWidth, InHeight);
-            }
-            else
-            {
-                g.DrawRectangle(p, PenX, PenY, InWidth, InHeight);
-            }        
+            var Rectangle = factory.MakeRectangle(p, PenX, PenY, InWidth, InHeight, Fill);
+            Rectangle.Execute();
         }
 
         /// <summary>
@@ -73,38 +70,18 @@ namespace Assignment
         /// <param name="Input3">third point</param>
         public void DrawTriangle(int Input1, int Input2, int Input3)
         {
-
-            Point Point1 = new Point(PenX - Input1, PenY + Input1);
-            Point Point2 = new Point(PenX, PenY - Input2);
-            Point Point3 = new Point(PenX + Input3, PenY + Input3);
-            Point[] Triangle =
-            {
-                Point1, Point2, Point3
-            };
-            if (Fill == true)
-            {
-                g.FillPolygon(p.Brush, Triangle);
-            }
-            else
-            {
-                g.DrawPolygon(p, Triangle);
-            }
+            var Triangle = factory.MakeTriangle(p, PenX, PenY, Input1, Input2, Input3, Fill);
+            Triangle.Execute();
         }
-
+  
         /// <summary>
         /// Draw a circle
         /// </summary>
         /// <param name="InRadius">Size of circle</param>
         public void DrawCircle(int InRadius)
         {
-            if(Fill == true)
-            {
-                g.FillEllipse(p.Brush, PenX, PenY, InRadius, InRadius);
-            }
-            else
-            {
-                g.DrawEllipse(p, PenX, PenY, InRadius, InRadius);
-            }          
+            var Circle = factory.MakeCircle(p, PenX, PenY, InRadius, Fill);
+            Circle.Execute();
         }
 
         /// <summary>

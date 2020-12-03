@@ -501,6 +501,10 @@ namespace Assignment
             {
                 dp.ResetPen();
             }
+            else
+            {
+                Errors.Add("Invalid command at line: " + LineNum);
+            }
         }
 
         /// <summary>
