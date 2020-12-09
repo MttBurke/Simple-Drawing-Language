@@ -85,5 +85,21 @@ namespace AssignmentTests
             p.ParseTextBox(txtbox.Lines);
             Assert.AreEqual(1, p.Errors.Count);
         }
+
+        /*
+         * Testing for creation of a new method with the name "test" and command "Circle 25"
+         */
+        [TestMethod]
+        public void TestMakeNewMethod()
+        {
+            TextBox txtbox = new TextBox();
+            Bitmap bitmap = new Bitmap(800, 600);
+            txtbox.Text = "Method test ()\r\nCircle 25\r\nEndmethod";
+            ExtendedParser p = new ExtendedParser(new Panel(), bitmap);
+
+            p.ParseTextBox(txtbox.Lines);
+            Assert.AreEqual("test", p.ListMethods[0].Name);
+            Assert.AreEqual("Circle 25", p.ListMethods[0].Commands[0]);
+        }
     }
 }

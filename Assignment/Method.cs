@@ -9,7 +9,7 @@ namespace Assignment
     /// <summary>
     /// Method class used to store methods with a list of commands and list of parameters
     /// </summary>
-    class Method
+    public class Method
     {
         /// <summary>
         /// Name of method

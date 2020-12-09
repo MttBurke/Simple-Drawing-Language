@@ -24,7 +24,7 @@ namespace Assignment
         bool LoopStatement = false;
         int LineNum = 0;
         public List<string> Errors = new List<string>();
-        List<Method> ListMethods = new List<Method>();
+        public List<Method> ListMethods = new List<Method>();
         List<string> PanelCommands = new List<string> { "drawTo", "moveTo", "Rectangle", "Triangle", "Circle", "Clear", "Fill", "Reset", "Colour" };
 
         public ExtendedParser(Panel InputPanel, Bitmap InputBitmap) : base(InputPanel, InputBitmap)

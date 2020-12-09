@@ -7,6 +7,9 @@ using System.Drawing;
 
 namespace Assignment
 {
+    /// <summary>
+    /// Design pattern for all the shapes
+    /// </summary>
     class Commands
     {
         public interface ICommands
@@ -15,7 +18,7 @@ namespace Assignment
         }
 
         /// <summary>
-        /// Design Pattern for the different shapes
+        /// Design Pattern for the Circle
         /// </summary>
         public class Circle:ICommands
         {
@@ -49,6 +52,9 @@ namespace Assignment
             }
         }
 
+        /// <summary>
+        /// Design Pattern for Triangles
+        /// </summary>
         public class Triangle:ICommands
         {
             private int x;
@@ -91,6 +97,9 @@ namespace Assignment
             }
         }
 
+        /// <summary>
+        /// Design Pattern for Lines
+        /// </summary>
         public class Line:ICommands
         {
             int x, y;
@@ -114,6 +123,9 @@ namespace Assignment
             }
         }
 
+        /// <summary>
+        /// Design Pattern for Rectangles
+        /// </summary>
         public class Rectangle:ICommands
         {
             int x, y;
