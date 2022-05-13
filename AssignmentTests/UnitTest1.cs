@@ -101,5 +101,35 @@ namespace AssignmentTests
             Assert.AreEqual("test", p.ListMethods[0].Name);
             Assert.AreEqual("Circle 25", p.ListMethods[0].Commands[0]);
         }
+
+        /*
+         * Testing for creation of a variable with the name "var" and value of 200
+         */
+        [TestMethod]
+        public void TestCreatingVariable()
+        {
+            TextBox txtbox = new TextBox();
+            Bitmap bitmap = new Bitmap(800, 600);
+            txtbox.Text = "var = 200";
+            ExtendedParser p = new ExtendedParser(new Panel(), bitmap);
+
+            p.ParseTextBox(txtbox.Lines);
+            Assert.AreEqual(200, p.vars["var"]);
+        }
+
+        /*
+         * Testing for trying to loop with an undefined variable
+         */
+        [TestMethod]
+        public void TestLoopUndefinedVariable()
+        {
+            TextBox txtbox = new TextBox();
+            Bitmap bitmap = new Bitmap(800, 600);
+            txtbox.Text = "Loop invalid < 200\r\nCircle invalid\r\ninvalid + 10\r\nEndloop";
+            ExtendedParser p = new ExtendedParser(new Panel(), bitmap);
+
+            p.ParseTextBox(txtbox.Lines);
+            Assert.AreEqual(3, p.Errors.Count);
+        }
     }
 }

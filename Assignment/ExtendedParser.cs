@@ -17,7 +17,7 @@ namespace Assignment
     {
 
         public DrawingPanel dp;
-        Dictionary<string, int> vars = new Dictionary<string, int>();
+        public Dictionary<string, int> vars = new Dictionary<string, int>();
         Regex VariableName = new Regex("\\w*\\d*");
         public bool IfStatementValid = false; //Used for IF statements, Skips commands if the IF statement isn't correct until and ENDIF is found
         public bool EndifFound = true;
@@ -165,7 +165,7 @@ namespace Assignment
                     };
                     int EndLineNum = Array.IndexOf(LineArray, "Endmethod");
 
-                    if (EndLineNum !=  -1)
+                    if (EndLineNum != -1)
                     {
                         for (int i = LineNum + 1; i < EndLineNum; i++)
                         {
